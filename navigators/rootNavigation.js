@@ -41,7 +41,7 @@ const renderMenu = (navigation) => (
 
 const renderRightIcon = (navigation) => (
 	<TouchableWithoutFeedback onPress={() => navigation.navigate("Login")}>
-		<Icon name="ios-person" size={32} color="#000000" style={styles.rightMenu} />
+		<Icon name="ios-log-out" size={32} color="#000000" style={styles.rightMenu} />
 	</TouchableWithoutFeedback>
 )
 

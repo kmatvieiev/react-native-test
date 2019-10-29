@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { View, Button, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
+import {
+	View,
+	Button,
+	Text,
+	TextInput,
+	StyleSheet,
+	TouchableOpacity,
+	KeyboardAvoidingView
+} from 'react-native';
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import Icon from 'react-native-vector-icons/Ionicons';
-
-import { changeScreen, changeField, aproveData, blurField, actionASD } from "../actions/auth";
+import globalStyles from '../constants/styles'
+import { changeScreen, changeField, aproveData, blurField } from "../actions/auth";
 
 class AuthScreen extends Component {
 	componentDidUpdate(prevProps) {
@@ -41,10 +48,14 @@ class AuthScreen extends Component {
 	renderSignUp = () => {
 		const { name, password, email, errors } = this.props
 		return (
-			<View>
-				<Icon name="ios-menu" size={32} color="#000000"/>
-				<Text>Create account</Text>
-				<Text>Fast hotel booking in a few clicks. We hope you`ll love Routes</Text>
+			<View style={styles.container}>
+				<Icon name="ios-add-circle-outline" size={72} color="#000000"/>
+				<View styles={styles.header}>
+					<Text style={styles.headerText}>Create account</Text>
+					<Text style={styles.headerSubText}>
+						Fast hotel booking in a few clicks. We hope you`ll love Routes
+					</Text>
+				</View>
 				<Input
 					value={name}
 					placeholder="Name"
@@ -72,9 +83,11 @@ class AuthScreen extends Component {
 					onPress={this.handleSubmit}
 					style={styles.button}
 				/>
-				<View>
-					<Text>Already have an account?</Text>
-					<TouchableOpacity onPress={this.handleChangeScreen('Login')}><Text>Sign In</Text></TouchableOpacity>
+				<View style={styles.footer}>
+					<Text style={styles.footerText}>Already have an account?</Text>
+					<TouchableOpacity onPress={this.handleChangeScreen('Login')}>
+						<Text style={styles.link}>Sign In</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		)
@@ -83,10 +96,14 @@ class AuthScreen extends Component {
 	renderSignIn = () => {
 		const { name, password, errors } = this.props
 		return (
-			<View>
-				<Icon name="ios-menu" size={32} color="#000000"/>
-				<Text>Sign In to your account</Text>
-				<Text>Fast hotel booking in a few clicks. We hope you`ll love Routes</Text>
+			<View style={styles.container}>
+				<Icon name="ios-add-circle-outline" size={72} color="#000000"/>
+				<View styles={styles.header}>
+					<Text style={styles.headerText}>Sign In to your account</Text>
+					<Text style={styles.headerSubText}>
+						Fast hotel booking in a few clicks. We hope you`ll love Routes
+					</Text>
+				</View>
 				<Input
 					value={name}
 					placeholder="Name"
@@ -107,20 +124,22 @@ class AuthScreen extends Component {
 					onPress={this.handleSubmit}
 					title="Sign In"
 				/>
-				<View>
-					<Text>Do not have an account?</Text>
-					<TouchableOpacity onPress={this.handleChangeScreen('SignUp')}><Text>Sign Up</Text></TouchableOpacity>
+				<View style={styles.footer}>
+					<Text style={styles.footerText}>Do not have an account?</Text>
+					<TouchableOpacity onPress={this.handleChangeScreen('SignUp')}>
+						<Text style={styles.link}>Sign Up</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		)
 	}
 
 	render() {
-		const { mode } = this.props
+		const { navigation } = this.props
 		return (
-			<View style={styles.container}>
-				{mode === 'SignUp' ? this.renderSignUp() : this.renderSignIn()}
-			</View>
+			<KeyboardAvoidingView style={globalStyles.container} behavior="padding" enabled>
+				{navigation.state.routeName === 'SignUp' ? this.renderSignUp() : this.renderSignIn()}
+			</KeyboardAvoidingView>
 		)
 	}
 }
@@ -145,8 +164,7 @@ const mapDispatchToProps = dispatch => {
 		changeScreen,
 		changeField,
 		aproveData,
-		blurField,
-		actionASD
+		blurField
 	}, dispatch)
 }
 
@@ -155,21 +173,58 @@ export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		alignItems: 'center',
 		justifyContent: 'space-around',
 		paddingHorizontal: 20,
+		minHeight: '100%'
+	},
+	footer: {
+		flex: 1,
+		alignItems: 'center',
+		flexDirection: 'row'
+	},
+	header: {
+		textAlign: 'center',
+	},
+	headerText: {
+		fontSize: 32,
+		textAlign: 'center'
+	},
+	headerSubText: {
+		fontSize: 18,
+		textAlign: 'center'
+	},
+	footerText: {
+		marginRight: 5
+	},
+	link: {
+		color: 'blue'
 	},
 	button: {
 		backgroundColor: "#06bebd"
 	},
-	input: { height: 40, borderColor: 'gray', borderWidth: 1, textAlign: 'center' },
-	error: { color: 'red' },
-	errorInput: { borderColor: 'red'}
+	input: {
+		height: 40,
+		borderColor: 'gray',
+		borderWidth: 1,
+		textAlign: 'center',
+		minWidth: 400,
+	},
+	inputWrapper: {
+		margin: 10
+	},
+	error: {
+		color: 'red'
+	},
+	errorInput: {
+		borderColor: 'red'
+	}
 });
 
 function Input(props) {
 	const { value, placeholder, handleChange, handleBlur, secureTextEntry, error } = props
 	return (
-		<View>
+		<View style={styles.inputWrapper}>
 			<TextInput
 				value={value}
 				placeholder={placeholder}

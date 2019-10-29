@@ -1,6 +1,5 @@
 import { APPROVE_DATA, CHANGE_FIELD, CHANGE_SCREEN, BLUR_FIELD, CHECK_USER } from '../constants/auth'
 import { validateAuthFields } from "../helpers/validation";
-import { checkUser } from '../actions/auth'
 
 const initialState = {
 	name: '',
@@ -51,9 +50,10 @@ export default function data(state = initialState, action) {
 			}).length
 			const newState = { ...state }
 			if (!hasErrors) {
-				setTimeout(() => console.log(1), 1000)
 				newState.errors = {}
 				newState.loginSuccess = true
+			} else {
+				newState.errors = errors
 			}
 			return newState
 		}
