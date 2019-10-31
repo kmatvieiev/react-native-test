@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '../constants/styles';
 import { currencyCodes } from "../constants/currency";
 import { buyCurrency, changeCurrencyQuantity } from "../actions/currency";
+import MyIcon from '../src/config';
 
 class HomeScreen extends Component {
 	state = {
@@ -82,6 +83,7 @@ class HomeScreen extends Component {
 		return (
 			<View style={globalStyles.container}>
 				<Text>{myCurrency.UAH} Гривен на счету</Text>
+				<MyIcon name="ic_checkbox" size={20} color="#333333" />
 				<ScrollView horizontal styles={styles.container}>
 					{this.renderCards()}
 				</ScrollView>
